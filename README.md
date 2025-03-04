@@ -1,3 +1,7 @@
+# About this fork:
+Some of the benchmarks are adapted to work with [CHARM-SYCL](https://github.com/fjnl/CHARM-SYCL).
+
+# Original HeCBench explanation:
 # HeCBench
 This repository contains a collection of heterogeneous computing benchmarks written with CUDA, HIP, SYCL/DPC++, and OpenMP-4.5 target offloading for studying performance, portability, and productivity. 
 
