@@ -120,7 +120,7 @@ sycl::buffer<int, 1> outputBuffer(deviceResult, treeNumber);
         int gid = item.get_global_id(2);  // Use the Z-dimension as the 1D index
         int res = 0;
         for (int j = 0; j < treeSize; j++) {
-            res += AppleTree(gid * treeSize + j);
+            res += AppleTree[gid * treeSize + j];
         }
         Result[gid] = res;
       });
