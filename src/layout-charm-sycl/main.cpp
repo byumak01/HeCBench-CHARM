@@ -89,6 +89,7 @@ int main(int argc, char * argv[])
     for(int j = 0; j < treeSize; j++)
       reference[i] += i * treeSize + j;
 
+  sycl::queue q;
 
   sycl::range<1> gws(treeNumber);
   sycl::range<1> lws(GROUP_SIZE);
@@ -118,7 +119,7 @@ sycl::buffer<int, 1> outputBuffer(deviceResult, treeNumber);
       cgh.parallel_for(ndr, [=] (sycl::nd_item<1> item) {
         int gid = item.get_global_id(2);  // Use the Z-dimension as the 1D index
         int res = 0;
-        for (int i = 0; i < treeSize; i++) {
+        for (int j = 0; j < treeSize; j++) {
             res += AppleTree(gid * treeSize + j);
         }
         Result[gid] = res;
