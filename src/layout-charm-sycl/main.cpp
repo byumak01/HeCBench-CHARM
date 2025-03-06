@@ -139,8 +139,8 @@ int main(int argc, char *argv[])
   std::cout << "Average kernel execution time (AoS): "
             << (time * 1e-3f) / iterations << " (us)\n";
 
-  // sycl::host_accessor<int, 1, sycl::access_mode::read> hostResult(
-  //   outputBuffer);
+   sycl::host_accessor<int, 1, sycl::access_mode::read> hostResult(
+     outputBuffer);
 
   for(int i = 0; i < treeNumber; i++)
     {
@@ -189,8 +189,8 @@ int main(int argc, char *argv[])
   std::cout << "Average kernel execution time (SoA): "
             << (time * 1e-3f) / iterations << " (us)\n";
 
-  sycl::host_accessor<int, 1, sycl::access_mode::read> hostResult(
-    outputBuffer);
+  //sycl::host_accessor<int, 1, sycl::access_mode::read> hostResult(
+  //  outputBuffer);
 
   for(int i = 0; i < treeNumber; i++)
     {
