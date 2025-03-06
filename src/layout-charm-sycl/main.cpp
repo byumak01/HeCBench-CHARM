@@ -30,20 +30,6 @@ struct ApplesOnTrees
   int trees[TREE_NUM];
 };
 
-void AoSKernel(const AppleTree *__restrict trees,
-               int *__restrict outBuf,
-               int treeSize, sycl::nd_item<1> &item)
-{
-  uint gid = item.get_global_id(0);
-  uint res = 0;
-  for(int i = 0; i < treeSize; i++)
-  {
-    res += trees[gid].apples[i];
-  }
-  outBuf[gid] = res;
-}
-
-
 void SoAKernel(const ApplesOnTrees *__restrict applesOnTrees,
                int *__restrict outBuf,
                int treeSize, sycl::nd_item<1> &item)
@@ -113,15 +99,13 @@ int main(int argc, char * argv[])
 );
 
 
-  int sycl::buffer<int, 1> inputBuffer(data, elements);
-  int sycl::buffer<int, 1> outputBuffer(deviceResult, treeNumber);
+sycl::buffer<int, 1> inputBuffer(data, elements);
+sycl::buffer<int, 1> outputBuffer(deviceResult, treeNumber);
 
   //initialize aos data
   for (int i = 0; i < treeNumber; i++)
     for(int j = 0; j < treeSize; j++)
       data[j + i* treeSize] = j + i* treeSize;
-
-  q.memcpy(inputBuffer, data, inputSize).wait();
 
   auto start = std::chrono::steady_clock::now();
 
