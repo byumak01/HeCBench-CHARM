@@ -34,15 +34,6 @@
 #define TREE_SIZE 4096
 #define GROUP_SIZE 256
 
-struct ApplesOnTrees
-{
-  int trees[TREE_NUM];
-};
-
-void SoAKernel(const ApplesOnTrees *__restrict applesOnTrees,
-               int *__restrict outBuf, int treeSize, sycl::nd_item<1> &item)
-{}
-
 int main(int argc, char *argv[])
 {
   if(argc != 2)
