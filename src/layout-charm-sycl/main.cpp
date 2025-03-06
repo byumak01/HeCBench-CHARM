@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
   for(int i = 0; i < iterations; i++)
     {
       q.submit([&](sycl::handler &cgh) {
-        cgh.parallel_for(ndr, [=](sycl::nd_item<1> item) {
+        cgh.parallel_for(ndr, [=](sycl::nd_item<3> const& item) {
           uint gid = item.get_global_linear_id();
           uint res = 0;
           for(int j = 0; j < treeSize; j++)
@@ -201,12 +201,12 @@ int main(int argc, char *argv[])
     std::cout << "FAIL\n";
   else
     std::cout << "PASS\n";
-
+/*
   sycl::free(inputBuffer, q);
   sycl::free(outputBuffer, q);
   free(deviceResult);
   free(reference);
   free(data);
-
+*/
   return 0;
 }
