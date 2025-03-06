@@ -117,7 +117,7 @@ sycl::buffer<int, 1> outputBuffer(deviceResult, treeNumber);
       sycl::accessor<int, 1, sycl::access_mode::write> Result(outputBuffer, cgh);
 
       cgh.parallel_for(ndr, [=] (sycl::nd_item<3> const& item) {
-        int gid = item.get_global_id(2);  // Use the Z-dimension as the 1D index
+        int gid = (int)*item.get_global_linear_id();  // Use the Z-dimension as the 1D index
         int res = 0;
         for (int j = 0; j < treeSize; j++) {
             res += AppleTree[gid * treeSize + j];
