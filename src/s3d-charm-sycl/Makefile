@@ -23,10 +23,10 @@ obj = $(source:.cpp=.o)
 #===============================================================================
 
 $(program): $(obj)
-        $(CC) $(CFLAGS) $(obj) -o $@ $(LDFLAGS)
+  $(CC) $(CFLAGS) $(obj) -o $@ $(LDFLAGS)
 
 %.o: %.cpp
-        $(CC) $(CFLAGS) -c $< -o $@
+  $(CC) $(CFLAGS) -c $< -o $@
 
 main.o: main.cpp OptionParser.h Utility.h
 
@@ -37,7 +37,7 @@ OptionParser.o: OptionParser.cpp OptionParser.h Utility.h
 S3D_with_nd_range.o: S3D_with_nd_range.cpp S3D.h OptionParser.h *.sycl
 
 clean:
-        rm -rf $(program) $(obj)
+  rm -rf $(program) $(obj)
 
 run: $(program)
-        $(LAUNCHER) ./$(program) -q -n 100 -s 1
+  $(LAUNCHER) ./$(program) -q -n 100 -s 1
