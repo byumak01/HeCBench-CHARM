@@ -35,25 +35,25 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
     q.submit([&](sycl::handler &cgh) {
       sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
       cgh.parallel_for<>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-        Add1<T>(item, &deviceMem, repeat, 10.0);
+        Add1<T>(item, deviceMem, repeat, 10.0);
       });
     });
     q.submit([&](sycl::handler &cgh) {
       sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
       cgh.parallel_for<>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-        Add2<T>(item, &deviceMem, repeat, 10.0);
+        Add2<T>(item, deviceMem, repeat, 10.0);
       });
     });
     q.submit([&](sycl::handler &cgh) {
       sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
       cgh.parallel_for<>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-        Add4<T>(item, &deviceMem, repeat, 10.0);
+        Add4<T>(item, deviceMem, repeat, 10.0);
       });
     });
     q.submit([&](sycl::handler &cgh) {
       sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
       cgh.parallel_for<>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-        Add8<T>(item, &deviceMem, repeat, 10.0);
+        Add8<T>(item, deviceMem, repeat, 10.0);
       });
     });
     q.wait();
@@ -69,7 +69,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   q.submit([&](sycl::handler &cgh) {
     sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
     cgh.parallel_for<class add1<T>>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-      Add1<T>(item, &deviceMem, repeat, 10.0);
+      Add1<T>(item, deviceMem, repeat, 10.0);
     });
   });
   q.wait();
@@ -87,7 +87,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   q.submit([&](sycl::handler &cgh) {
     sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
     cgh.parallel_for<class add2<T>>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-      Add2<T>(item, &deviceMem, repeat, 10.0);
+      Add2<T>(item, deviceMem, repeat, 10.0);
     });
   });
   q.wait();
@@ -104,7 +104,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   q.submit([&](sycl::handler &cgh) {
     sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
     cgh.parallel_for<class add4<T>>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-      Add4<T>(item, &deviceMem, repeat, 10.0);
+      Add4<T>(item, deviceMem, repeat, 10.0);
     });
   });
   q.wait();
@@ -121,7 +121,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   q.submit([&](sycl::handler &cgh) {
     sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
     cgh.parallel_for<class add8<T>>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-      Add8<T>(item, &deviceMem, repeat, 10.0);
+      Add8<T>(item, deviceMem, repeat, 10.0);
     });
   });
   q.wait();
@@ -134,24 +134,24 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
     q.submit([&](sycl::handler &cgh) {
       sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
       cgh.parallel_for<>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-        Mul1<T>(item, &deviceMem, repeat, 1.01);
+        Mul1<T>(item, deviceMem, repeat, 1.01);
       });
     });
     q.submit([&](sycl::handler &cgh) {
       sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
       cgh.parallel_for<>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-        Mul2<T>(item, &deviceMem, repeat, 1.01);
+        Mul2<T>(item, deviceMem, repeat, 1.01);
       });
     });
     q.submit([&](sycl::handler &cgh) {sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
       cgh.parallel_for<>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-        Mul4<T>(item, &deviceMem, repeat, 1.01);
+        Mul4<T>(item, deviceMem, repeat, 1.01);
       });
     });
     q.submit([&](sycl::handler &cgh) {
       sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
       cgh.parallel_for<>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-        Mul8<T>(item, &deviceMem, repeat, 1.01);
+        Mul8<T>(item, deviceMem, repeat, 1.01);
       });
     });
     q.wait();
@@ -166,7 +166,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   q.submit([&](sycl::handler &cgh) {
     sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
     cgh.parallel_for<class mul1<T>>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-      Mul1<T>(item, &deviceMem, repeat, 1.01);
+      Mul1<T>(item, deviceMem, repeat, 1.01);
     });
   });
   q.wait();
@@ -183,7 +183,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   q.submit([&](sycl::handler &cgh) {
     sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
     cgh.parallel_for<class mul2<T>>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-      Mul2<T>(item, &deviceMem, repeat, 1.01);
+      Mul2<T>(item, deviceMem, repeat, 1.01);
     });
   });
   q.wait();
@@ -200,7 +200,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   q.submit([&](sycl::handler &cgh) {
     sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
     cgh.parallel_for<class mul4<T>>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-      Mul4<T>(item, &deviceMem, repeat, 1.01);
+      Mul4<T>(item, deviceMem, repeat, 1.01);
     });
   });
   q.wait();
@@ -217,7 +217,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   q.submit([&](sycl::handler &cgh) {
     sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
     cgh.parallel_for<class mul8<T>>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-      Mul8<T>(item, &deviceMem, repeat, 1.01);
+      Mul8<T>(item, deviceMem, repeat, 1.01);
     });
   });
   q.wait();
@@ -230,25 +230,25 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
     q.submit([&](sycl::handler &cgh) {
       sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
       cgh.parallel_for<>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-        MAdd1<T>(item, &deviceMem, repeat, 10.0, 0.9899);
+        MAdd1<T>(item, deviceMem, repeat, 10.0, 0.9899);
       });
     });
     q.submit([&](sycl::handler &cgh) {
       sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
       cgh.parallel_for<>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-        MAdd2<T>(item, &deviceMem, repeat, 10.0, 0.9899);
+        MAdd2<T>(item, deviceMem, repeat, 10.0, 0.9899);
       });
     });
     q.submit([&](sycl::handler &cgh) {
       sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
       cgh.parallel_for<>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-        MAdd4<T>(item, &deviceMem, repeat, 10.0, 0.9899);
+        MAdd4<T>(item, deviceMem, repeat, 10.0, 0.9899);
       });
     });
     q.submit([&](sycl::handler &cgh) {
       sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
       cgh.parallel_for<>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-        MAdd8<T>(item, &deviceMem, repeat, 10.0, 0.9899);
+        MAdd8<T>(item, deviceMem, repeat, 10.0, 0.9899);
       });
     });
     q.wait();
@@ -263,7 +263,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   q.submit([&](sycl::handler &cgh) {
     sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
     cgh.parallel_for<class madd1<T>>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-      MAdd1<T>(item, &deviceMem, repeat, 10.0, 0.9899);
+      MAdd1<T>(item, deviceMem, repeat, 10.0, 0.9899);
     });
   });
   q.wait();
@@ -280,7 +280,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   q.submit([&](sycl::handler &cgh) {
     sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
     cgh.parallel_for<class madd2<T>>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-      MAdd2<T>(item, &deviceMem, repeat, 10.0, 0.9899);
+      MAdd2<T>(item, deviceMem, repeat, 10.0, 0.9899);
     });
   });
   q.wait();
@@ -297,7 +297,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   q.submit([&](sycl::handler &cgh) {
     sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
     cgh.parallel_for<class madd4<T>>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-      MAdd4<T>(item, &deviceMem, repeat, 10.0, 0.9899);
+      MAdd4<T>(item, deviceMem, repeat, 10.0, 0.9899);
     });
   });
   q.wait();
@@ -314,7 +314,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   q.submit([&](sycl::handler &cgh) {
     sycl::accessor<T, 1, sycl::access_mode::read_write> deviceMem(deviceMem_buffer, cgh);
     cgh.parallel_for<class madd8<T>>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
-      MAdd8<T>(item, &deviceMem, repeat, 10.0, 0.9899);
+      MAdd8<T>(item, deviceMem, repeat, 10.0, 0.9899);
     });
   });
   q.wait();
