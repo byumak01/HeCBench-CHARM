@@ -62,7 +62,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //q.memcpy(&deviceMem, hostMem, sizeof(T) * numFloats).wait();
   {
     sycl::host_accessor<T, 1, sycl::access_mode::read_write> host_acc(deviceMem_buffer);
-    std::memcpy(host_acc.get_pointer(), hostMem, sizeof(T) * numFloats);
+    std::memcpy(host_acc.get_pointer(), &hostMem, sizeof(T) * numFloats);
   }
 
   auto k_start = std::chrono::high_resolution_clock::now();
@@ -80,7 +80,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //q.memcpy(&deviceMem, hostMem, sizeof(T) * numFloats).wait();
   {
     sycl::host_accessor<T, 1, sycl::access_mode::read_write> host_acc(deviceMem_buffer);
-    std::memcpy(host_acc.get_pointer(), hostMem, sizeof(T) * numFloats);
+    std::memcpy(host_acc.get_pointer(), &hostMem, sizeof(T) * numFloats);
   }
 
   k_start = std::chrono::high_resolution_clock::now();
@@ -98,7 +98,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //q.memcpy(&deviceMem, hostMem, sizeof(T) * numFloats).wait();
   {
     sycl::host_accessor<T, 1, sycl::access_mode::read_write> host_acc(deviceMem_buffer);
-    std::memcpy(host_acc.get_pointer(), hostMem, sizeof(T) * numFloats);
+    std::memcpy(host_acc.get_pointer(), &hostMem, sizeof(T) * numFloats);
   }
   k_start = std::chrono::high_resolution_clock::now();
   q.submit([&](sycl::handler &cgh) {
@@ -115,7 +115,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //q.memcpy(&deviceMem, hostMem, sizeof(T) * numFloats).wait();
   {
     sycl::host_accessor<T, 1, sycl::access_mode::read_write> host_acc(deviceMem_buffer);
-    std::memcpy(host_acc.get_pointer(), hostMem, sizeof(T) * numFloats);
+    std::memcpy(host_acc.get_pointer(), &hostMem, sizeof(T) * numFloats);
   }
   k_start = std::chrono::high_resolution_clock::now();
   q.submit([&](sycl::handler &cgh) {
@@ -160,7 +160,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //q.memcpy(&deviceMem, hostMem, sizeof(T) * numFloats).wait();
   {
     sycl::host_accessor<T, 1, sycl::access_mode::read_write> host_acc(deviceMem_buffer);
-    std::memcpy(host_acc.get_pointer(), hostMem, sizeof(T) * numFloats);
+    std::memcpy(host_acc.get_pointer(), &hostMem, sizeof(T) * numFloats);
   }
   k_start = std::chrono::high_resolution_clock::now();
   q.submit([&](sycl::handler &cgh) {
@@ -177,7 +177,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //q.memcpy(&deviceMem, hostMem, sizeof(T) * numFloats).wait();
   {
     sycl::host_accessor<T, 1, sycl::access_mode::read_write> host_acc(deviceMem_buffer);
-    std::memcpy(host_acc.get_pointer(), hostMem, sizeof(T) * numFloats);
+    std::memcpy(host_acc.get_pointer(), &hostMem, sizeof(T) * numFloats);
   }
   k_start = std::chrono::high_resolution_clock::now();
   q.submit([&](sycl::handler &cgh) {
@@ -194,7 +194,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //q.memcpy(&deviceMem, hostMem, sizeof(T) * numFloats).wait();
   {
     sycl::host_accessor<T, 1, sycl::access_mode::read_write> host_acc(deviceMem_buffer);
-    std::memcpy(host_acc.get_pointer(), hostMem, sizeof(T) * numFloats);
+    std::memcpy(host_acc.get_pointer(), &hostMem, sizeof(T) * numFloats);
   }
   k_start = std::chrono::high_resolution_clock::now();
   q.submit([&](sycl::handler &cgh) {
@@ -211,7 +211,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //q.memcpy(&deviceMem, hostMem, sizeof(T) * numFloats).wait();
   {
     sycl::host_accessor<T, 1, sycl::access_mode::read_write> host_acc(deviceMem_buffer);
-    std::memcpy(host_acc.get_pointer(), hostMem, sizeof(T) * numFloats);
+    std::memcpy(host_acc.get_pointer(), &hostMem, sizeof(T) * numFloats);
   }
   k_start = std::chrono::high_resolution_clock::now();
   q.submit([&](sycl::handler &cgh) {
@@ -257,7 +257,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //q.memcpy(&deviceMem, hostMem, sizeof(T) * numFloats).wait();
   {
     sycl::host_accessor<T, 1, sycl::access_mode::read_write> host_acc(deviceMem_buffer);
-    std::memcpy(host_acc.get_pointer(), hostMem, sizeof(T) * numFloats);
+    std::memcpy(host_acc.get_pointer(), &hostMem, sizeof(T) * numFloats);
   }
   k_start = std::chrono::high_resolution_clock::now();
   q.submit([&](sycl::handler &cgh) {
@@ -274,7 +274,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //q.memcpy(&deviceMem, hostMem, sizeof(T) * numFloats).wait();
   {
     sycl::host_accessor<T, 1, sycl::access_mode::read_write> host_acc(deviceMem_buffer);
-    std::memcpy(host_acc.get_pointer(), hostMem, sizeof(T) * numFloats);
+    std::memcpy(host_acc.get_pointer(), &hostMem, sizeof(T) * numFloats);
   }
   k_start = std::chrono::high_resolution_clock::now();
   q.submit([&](sycl::handler &cgh) {
@@ -291,7 +291,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //q.memcpy(&deviceMem, hostMem, sizeof(T) * numFloats).wait();
   {
     sycl::host_accessor<T, 1, sycl::access_mode::read_write> host_acc(deviceMem_buffer);
-    std::memcpy(host_acc.get_pointer(), hostMem, sizeof(T) * numFloats);
+    std::memcpy(host_acc.get_pointer(), &hostMem, sizeof(T) * numFloats);
   }
   k_start = std::chrono::high_resolution_clock::now();
   q.submit([&](sycl::handler &cgh) {
@@ -308,7 +308,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //q.memcpy(&deviceMem, hostMem, sizeof(T) * numFloats).wait();
   {
     sycl::host_accessor<T, 1, sycl::access_mode::read_write> host_acc(deviceMem_buffer);
-    std::memcpy(host_acc.get_pointer(), hostMem, sizeof(T) * numFloats);
+    std::memcpy(host_acc.get_pointer(), &hostMem, sizeof(T) * numFloats);
   }
   k_start = std::chrono::high_resolution_clock::now();
   q.submit([&](sycl::handler &cgh) {
@@ -354,7 +354,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //q.memcpy(&deviceMem, hostMem, sizeof(T) * numFloats).wait();
   {
     sycl::host_accessor<T, 1, sycl::access_mode::read_write> host_acc(deviceMem_buffer);
-    std::memcpy(host_acc.get_pointer(), hostMem, sizeof(T) * numFloats);
+    std::memcpy(host_acc.get_pointer(), &hostMem, sizeof(T) * numFloats);
   }
   k_start = std::chrono::high_resolution_clock::now();
   q.submit([&](sycl::handler &cgh) {
@@ -371,7 +371,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //q.memcpy(&deviceMem, hostMem, sizeof(T) * numFloats).wait();
   {
     sycl::host_accessor<T, 1, sycl::access_mode::read_write> host_acc(deviceMem_buffer);
-    std::memcpy(host_acc.get_pointer(), hostMem, sizeof(T) * numFloats);
+    std::memcpy(host_acc.get_pointer(), &hostMem, sizeof(T) * numFloats);
   }
   k_start = std::chrono::high_resolution_clock::now();
   q.submit([&](sycl::handler &cgh) {
@@ -388,7 +388,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //q.memcpy(&deviceMem, hostMem, sizeof(T) * numFloats).wait();
   {
     sycl::host_accessor<T, 1, sycl::access_mode::read_write> host_acc(deviceMem_buffer);
-    std::memcpy(host_acc.get_pointer(), hostMem, sizeof(T) * numFloats);
+    std::memcpy(host_acc.get_pointer(), &hostMem, sizeof(T) * numFloats);
   }
   k_start = std::chrono::high_resolution_clock::now();
   q.submit([&](sycl::handler &cgh) {
@@ -405,7 +405,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //q.memcpy(&deviceMem, hostMem, sizeof(T) * numFloats).wait();
   {
     sycl::host_accessor<T, 1, sycl::access_mode::read_write> host_acc(deviceMem_buffer);
-    std::memcpy(host_acc.get_pointer(), hostMem, sizeof(T) * numFloats);
+    std::memcpy(host_acc.get_pointer(), &hostMem, sizeof(T) * numFloats);
   }
   k_start = std::chrono::high_resolution_clock::now();
   q.submit([&](sycl::handler &cgh) {
