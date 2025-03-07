@@ -1,10 +1,10 @@
+#include "OptionParser.h"
+#include "S3D.h"
 #include <cassert>
 #include <chrono>
-#include <string>
 #include <sstream>
-#include "OptionParser.h"
+#include <string>
 #include <sycl/sycl.hpp>
-#include "S3D.h"
 
 using namespace std;
 
@@ -27,7 +27,7 @@ void RunTest(string testName, sycl::queue &q, OptionParser &op);
 // Modifications:
 //
 // ********************************************************
-template<class T> inline string toString(const T& t)
+template <class T> inline string toString(const T &t)
 {
   stringstream ss;
   ss << t;
@@ -51,77 +51,77 @@ template<class T> inline string toString(const T& t)
 // Modifications:
 //
 // ****************************************************************************
-void
-addBenchmarkSpecOptions(OptionParser &op)
+void addBenchmarkSpecOptions(OptionParser &op)
 {
   ; // No S3D specific options
 }
 
 void RunBenchmark(OptionParser &op)
 {
-
   sycl::queue q;
 
   auto t1 = std::chrono::high_resolution_clock::now();
   RunTest<float>("S3D-SP", q, op);
   auto t2 = std::chrono::high_resolution_clock::now();
-  double total_time = std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
+  double total_time
+    = std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
   printf("Total time %lf secs \n", total_time * 1e-9);
 
   t1 = std::chrono::high_resolution_clock::now();
   RunTest<double>("S3D-DP", q, op);
   t2 = std::chrono::high_resolution_clock::now();
-  total_time = std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
+  total_time
+    = std::chrono::duration_cast<std::chrono::nanoseconds>(t2 - t1).count();
   printf("Total time %lf secs \n", total_time * 1e-9);
 }
 
-
-template <class T> class ratt; 
-template <class T> class rdsmh; 
-template <class T> class gr_base; 
-template <class T> class ratt2; 
-template <class T> class ratt3; 
-template <class T> class ratt4; 
-template <class T> class ratt5; 
-template <class T> class ratt6; 
-template <class T> class ratt7; 
-template <class T> class ratt8; 
-template <class T> class ratt9; 
-template <class T> class ratt10; 
-template <class T> class ratx; 
-template <class T> class ratxb; 
-template <class T> class ratx2; 
-template <class T> class ratx4; 
-template <class T> class qssa; 
-template <class T> class qssab; 
-template <class T> class qssa2; 
-template <class T> class rdwdot; 
-template <class T> class rdwdot2; 
-template <class T> class rdwdot3; 
-template <class T> class rdwdot6; 
-template <class T> class rdwdot7; 
-template <class T> class rdwdot8; 
-template <class T> class rdwdot9; 
-template <class T> class rdwdot10; 
+template <class T> class ratt;
+template <class T> class rdsmh;
+template <class T> class gr_base;
+template <class T> class ratt2;
+template <class T> class ratt3;
+template <class T> class ratt4;
+template <class T> class ratt5;
+template <class T> class ratt6;
+template <class T> class ratt7;
+template <class T> class ratt8;
+template <class T> class ratt9;
+template <class T> class ratt10;
+template <class T> class ratx;
+template <class T> class ratxb;
+template <class T> class ratx2;
+template <class T> class ratx4;
+template <class T> class qssa;
+template <class T> class qssab;
+template <class T> class qssa2;
+template <class T> class rdwdot;
+template <class T> class rdwdot2;
+template <class T> class rdwdot3;
+template <class T> class rdwdot6;
+template <class T> class rdwdot7;
+template <class T> class rdwdot8;
+template <class T> class rdwdot9;
+template <class T> class rdwdot10;
 
 template <class real>
 void RunTest(string testName, sycl::queue &q, OptionParser &op)
 {
   // Number of grid points (specified in header file)
-  int probSizes_SP[4] = { 8, 16, 32, 64};
-  int probSizes_DP[4] = { 8, 16, 32, 64};
-  int *probSizes = (sizeof(real) == sizeof(double)) ? probSizes_DP : probSizes_SP;
+  int probSizes_SP[4] = {8, 16, 32, 64};
+  int probSizes_DP[4] = {8, 16, 32, 64};
+  int *probSizes
+    = (sizeof(real) == sizeof(double)) ? probSizes_DP : probSizes_SP;
   int sizeClass = op.getOptionInt("size") - 1;
   assert(sizeClass >= 0 && sizeClass < 4);
   sizeClass = probSizes[sizeClass];
   int n = sizeClass * sizeClass * sizeClass;
 
   // Host variables
-  real* host_t = (real*) malloc (n*sizeof(real));
-  real* host_p = (real*) malloc (n*sizeof(real));
-  real* host_y = (real*) malloc (Y_SIZE*n*sizeof(real));
-  real* host_wdot = (real*) malloc (WDOT_SIZE*n*sizeof(real));
-  real* host_molwt = (real*) malloc (WDOT_SIZE*n*sizeof(real));
+  real *host_t = (real *)malloc(n * sizeof(real));
+  real *host_p = (real *)malloc(n * sizeof(real));
+  real *host_y = (real *)malloc(Y_SIZE * n * sizeof(real));
+  real *host_wdot = (real *)malloc(WDOT_SIZE * n * sizeof(real));
+  real *host_molwt = (real *)malloc(WDOT_SIZE * n * sizeof(real));
 
   // Initialize Test Problem
 
@@ -131,273 +131,288 @@ void RunTest(string testName, sycl::queue &q, OptionParser &op)
   real pconv = 1.0;
 
   // Initialize temp and pressure
-  for (int i=0; i<n; i++)
-  {
-    host_p[i] = 1.0132e6;
-    host_t[i] = 1000.0;
-  }
+  for(int i = 0; i < n; i++)
+    {
+      host_p[i] = 1.0132e6;
+      host_t[i] = 1000.0;
+    }
 
   // Init molwt: for now these are just 1, to compare results betw. cpu & gpu
-  for (int i=0; i<WDOT_SIZE; i++)
-  {
-    host_molwt[i] = 1;
-  }
+  for(int i = 0; i < WDOT_SIZE; i++)
+    {
+      host_molwt[i] = 1;
+    }
 
   // Initialize mass fractions
-  for (int j=0; j<Y_SIZE; j++)
-  {
-    for (int i=0; i<n; i++)
+  for(int j = 0; j < Y_SIZE; j++)
     {
-      host_y[(j*n)+i]= 0.0;
-      if (j==14)
-        host_y[(j*n)+i] = 0.064;
-      if (j==3)
-        host_y[(j*n)+i] = 0.218;
-      if (j==21)
-        host_y[(j*n)+i] = 0.718;
+      for(int i = 0; i < n; i++)
+        {
+          host_y[(j * n) + i] = 0.0;
+          if(j == 14)
+            host_y[(j * n) + i] = 0.064;
+          if(j == 3)
+            host_y[(j * n) + i] = 0.218;
+          if(j == 21)
+            host_y[(j * n) + i] = 0.718;
+        }
     }
-  }
 
   // Get kernel launch config, assuming n is divisible by block size
   sycl::range<1> lws(BLOCK_SIZE);
-  sycl::range<1> gws (n);
+  sycl::range<1> gws(n);
   sycl::range<1> lws2(BLOCK_SIZE2);
-  sycl::range<1> gws2 (n);
+  sycl::range<1> gws2(n);
 
-  //real *d_t = sycl::malloc_device<real>(n, q);
-  //q.memcpy(d_t, host_t, n*sizeof(real));
-  sycl::buffer<real, 1> d_t(n);
+  // real *d_t = sycl::malloc_device<real>(n, q);
+  // q.memcpy(d_t, host_t, n*sizeof(real));
+  sycl::buffer<real, 1> d_t_buffer(n);
 
-  //real *d_p = sycl::malloc_device<real>(n, q);
-  //q.memcpy(d_p, host_p, n*sizeof(real));
-  sycl::buffer<real, 1> d_p(n);
+  // real *d_p = sycl::malloc_device<real>(n, q);
+  // q.memcpy(d_p, host_p, n*sizeof(real));
+  sycl::buffer<real, 1> d_p_buffer(n);
 
-  //real *d_y = sycl::malloc_device<real>(Y_SIZE*n, q);
-  //q.memcpy(d_y, host_y, Y_SIZE*n*sizeof(real));
-  sycl::buffer<real, 1> d_y(Y_SIZE*n);
+  // real *d_y = sycl::malloc_device<real>(Y_SIZE*n, q);
+  // q.memcpy(d_y, host_y, Y_SIZE*n*sizeof(real));
+  sycl::buffer<real, 1> d_y_buffer(Y_SIZE * n);
 
-  //real *d_molwt = sycl::malloc_device<real>(WDOT_SIZE, q);
-  //q.memcpy(d_molwt, host_molwt, WDOT_SIZE*sizeof(real));
-  sycl::buffer<real, 1> d_molwt(WDOT_SIZE);
+  // real *d_molwt = sycl::malloc_device<real>(WDOT_SIZE, q);
+  // q.memcpy(d_molwt, host_molwt, WDOT_SIZE*sizeof(real));
+  sycl::buffer<real, 1> d_molwt_buffer(WDOT_SIZE);
 
-  //real *d_wdot = sycl::malloc_device<real>(WDOT_SIZE*n, q);
-  sycl::buffer<real, 1> d_wdot(WDOT_SIZE*n);
+  // real *d_wdot = sycl::malloc_device<real>(WDOT_SIZE*n, q);
+  sycl::buffer<real, 1> d_wdot_buffer(WDOT_SIZE * n);
 
-  //real *d_rf = sycl::malloc_device<real>(RF_SIZE*n, q);
-  sycl::buffer<real, 1> d_rf(RF_SIZE*n);
+  // real *d_rf = sycl::malloc_device<real>(RF_SIZE*n, q);
+  sycl::buffer<real, 1> d_rf_buffer(RF_SIZE * n);
 
-  //real *d_rb = sycl::malloc_device<real>(RB_SIZE*n, q);
-  sycl::buffer<real, 1> d_rb(RB_SIZE*n);
+  // real *d_rb = sycl::malloc_device<real>(RB_SIZE*n, q);
+  sycl::buffer<real, 1> d_rb_buffer(RB_SIZE * n);
 
-  //real *d_rklow = sycl::malloc_device<real>(RKLOW_SIZE*n, q);
-  sycl::buffer<real, 1> d_rklow(RKLOW_SIZE*n);
+  // real *d_rklow = sycl::malloc_device<real>(RKLOW_SIZE*n, q);
+  sycl::buffer<real, 1> d_rklow_buffer(RKLOW_SIZE * n);
 
-  //real *d_c = sycl::malloc_device<real>(C_SIZE*n, q);
-  sycl::buffer<real, 1> d_c(C_SIZE*n);
+  // real *d_c = sycl::malloc_device<real>(C_SIZE*n, q);
+  sycl::buffer<real, 1> d_c_buffer(C_SIZE * n);
 
-  //real *d_a = sycl::malloc_device<real>(A_SIZE*n, q);
-  sycl::buffer<real, 1> d_a(A_SIZE*n);
+  // real *d_a = sycl::malloc_device<real>(A_SIZE*n, q);
+  sycl::buffer<real, 1> d_a_buffer(A_SIZE * n);
 
-  //real *d_eg = sycl::malloc_device<real>(EG_SIZE*n, q);
-  sycl::buffer<real, 1> d_eg(EG_SIZE*n);
+  // real *d_eg = sycl::malloc_device<real>(EG_SIZE*n, q);
+  sycl::buffer<real, 1> d_eg_buffer(EG_SIZE * n);
 
   unsigned int passes = op.getOptionInt("passes");
 
   q.wait();
-  auto start  = std::chrono::high_resolution_clock::now();
+  auto start = std::chrono::high_resolution_clock::now();
 
-  for (unsigned int i = 0; i < passes; i++)
-  {
-    //  ratt_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_rf, tconv);
-    q.submit([&] (sycl::handler &cgh) {
-      sycl::accessor<real, 1, sycl::access_mode::read> d_t_acc(d_t,
-        cgh);
-    
-      sycl::accessor<real, 1, sycl::access_mode::read> d_p_acc(d_p,
-        cgh);
-      cgh.parallel_for<class ratt<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
+  for(unsigned int i = 0; i < passes; i++)
+    {
+      //  ratt_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_rf,
+      //  tconv);
+      q.submit([&](sycl::handler &cgh) {
+        // Inside the SYCL command group handler (cgh)
+        auto d_t = d_t_buffer.get_access<sycl::access::mode::read>(cgh);
+        auto d_p = d_p_buffer.get_access<sycl::access::mode::read>(cgh);
+        auto d_y = d_y_buffer.get_access<sycl::access::mode::read>(cgh);
+        auto d_molwt
+          = d_molwt_buffer.get_access<sycl::access::mode::read>(cgh);
+
+        auto d_wdot = d_wdot_buffer.get_access<sycl::access::mode::write>(cgh);
+        auto d_rf = d_rf_buffer.get_access<sycl::access::mode::write>(cgh);
+        auto d_rb = d_rb_buffer.get_access<sycl::access::mode::write>(cgh);
+        auto d_rklow
+          = d_rklow_buffer.get_access<sycl::access::mode::write>(cgh);
+        auto d_c = d_c_buffer.get_access<sycl::access::mode::write>(cgh);
+        auto d_a = d_a_buffer.get_access<sycl::access::mode::write>(cgh);
+        auto d_eg = d_eg_buffer.get_access<sycl::access::mode::write>(cgh);
+
+        cgh.parallel_for<class ratt<real> >(sycl::nd_range<1>(gws2, lws2),
+                                            [=](sycl::nd_item<1> item) {
 #include "ratt.sycl"
+                                            });
       });
-    });
-    /*
-    //rdsmh_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_eg, tconv);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class rdsmh<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "rdsmh.sycl"
+      /*
+      //rdsmh_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_eg,
+  tconv); q.submit([&] (sycl::handler &cgh) { cgh.parallel_for<class
+  rdsmh<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
+  #include "rdsmh.sycl"
+        });
       });
-    });
 
-    // gr_base <<< dim3(blks2), dim3(thrds2), 0, s2 >>> ( gpu_p, gpu_t, gpu_y, gpu_c, tconv, pconv);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class gr_base<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "gr_base.sycl"
+      // gr_base <<< dim3(blks2), dim3(thrds2), 0, s2 >>> ( gpu_p, gpu_t,
+  gpu_y, gpu_c, tconv, pconv); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class gr_base<real>>(sycl::nd_range<1>(gws2, lws2),
+  [=] (sycl::nd_item<1> item) { #include "gr_base.sycl"
+        });
       });
-    });
 
-    //  ratt2_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_rf, gpu_rb, gpu_eg, tconv);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class ratt2<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "ratt2.sycl"
+      //  ratt2_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t,
+  gpu_rf, gpu_rb, gpu_eg, tconv); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class ratt2<real>>(sycl::nd_range<1>(gws2, lws2), [=]
+  (sycl::nd_item<1> item) { #include "ratt2.sycl"
+        });
       });
-    });
 
 
-    //ratt3_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_rf, gpu_rb, gpu_eg, tconv);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class ratt3<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "ratt3.sycl"
+      //ratt3_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_rf,
+  gpu_rb, gpu_eg, tconv); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class ratt3<real>>(sycl::nd_range<1>(gws2, lws2), [=]
+  (sycl::nd_item<1> item) { #include "ratt3.sycl"
+        });
       });
-    });
 
-    //ratt4_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_rf, gpu_rb, gpu_eg, tconv);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class ratt4<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "ratt4.sycl"
+      //ratt4_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_rf,
+  gpu_rb, gpu_eg, tconv); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class ratt4<real>>(sycl::nd_range<1>(gws2, lws2), [=]
+  (sycl::nd_item<1> item) { #include "ratt4.sycl"
+        });
       });
-    });
 
-    //ratt5_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_rf, gpu_rb, gpu_eg, tconv);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class ratt5<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "ratt5.sycl"
+      //ratt5_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_rf,
+  gpu_rb, gpu_eg, tconv); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class ratt5<real>>(sycl::nd_range<1>(gws2, lws2), [=]
+  (sycl::nd_item<1> item) { #include "ratt5.sycl"
+        });
       });
-    });
 
-    //  ratt6_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_rf, gpu_rb, gpu_eg, tconv);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class ratt6<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "ratt6.sycl"
+      //  ratt6_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t,
+  gpu_rf, gpu_rb, gpu_eg, tconv); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class ratt6<real>>(sycl::nd_range<1>(gws2, lws2), [=]
+  (sycl::nd_item<1> item) { #include "ratt6.sycl"
+        });
       });
-    });
-    //  ratt7_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_rf, gpu_rb, gpu_eg, tconv);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class ratt7<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "ratt7.sycl"
+      //  ratt7_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t,
+  gpu_rf, gpu_rb, gpu_eg, tconv); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class ratt7<real>>(sycl::nd_range<1>(gws2, lws2), [=]
+  (sycl::nd_item<1> item) { #include "ratt7.sycl"
+        });
       });
-    });
-    //ratt8_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_rf, gpu_rb, gpu_eg, tconv);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class ratt8<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "ratt8.sycl"
+      //ratt8_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_rf,
+  gpu_rb, gpu_eg, tconv); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class ratt8<real>>(sycl::nd_range<1>(gws2, lws2), [=]
+  (sycl::nd_item<1> item) { #include "ratt8.sycl"
+        });
       });
-    });
-    //ratt9_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_rf, gpu_rb, gpu_eg, tconv);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class ratt9<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "ratt9.sycl"
+      //ratt9_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_rf,
+  gpu_rb, gpu_eg, tconv); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class ratt9<real>>(sycl::nd_range<1>(gws2, lws2), [=]
+  (sycl::nd_item<1> item) { #include "ratt9.sycl"
+        });
       });
-    });
-    //ratt10_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t, gpu_rklow, tconv);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class ratt10<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "ratt10.sycl"
+      //ratt10_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_t,
+  gpu_rklow, tconv); q.submit([&] (sycl::handler &cgh) { cgh.parallel_for<class
+  ratt10<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
+  #include "ratt10.sycl"
+        });
       });
-    });
 
-    //ratx_kernel <<< dim3(blks), dim3(thrds), 0, s1 >>> ( gpu_t, gpu_c, gpu_rf, gpu_rb, gpu_rklow, tconv);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class ratx<real>>(sycl::nd_range<1>(gws, lws), [=] (sycl::nd_item<1> item) {
-#include "ratx.sycl"
+      //ratx_kernel <<< dim3(blks), dim3(thrds), 0, s1 >>> ( gpu_t, gpu_c,
+  gpu_rf, gpu_rb, gpu_rklow, tconv); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class ratx<real>>(sycl::nd_range<1>(gws, lws), [=]
+  (sycl::nd_item<1> item) { #include "ratx.sycl"
+        });
       });
-    });
-    //ratxb_kernel <<< dim3(blks), dim3(thrds), 0, s1 >>> ( gpu_t, gpu_c, gpu_rf, gpu_rb, gpu_rklow, tconv);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class ratxb<real>>(sycl::nd_range<1>(gws, lws), [=] (sycl::nd_item<1> item) {
-#include "ratxb.sycl"
+      //ratxb_kernel <<< dim3(blks), dim3(thrds), 0, s1 >>> ( gpu_t, gpu_c,
+  gpu_rf, gpu_rb, gpu_rklow, tconv); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class ratxb<real>>(sycl::nd_range<1>(gws, lws), [=]
+  (sycl::nd_item<1> item) { #include "ratxb.sycl"
+        });
       });
-    });
 
-    //ratx2_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_c, gpu_rf, gpu_rb);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class ratx2<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "ratx2.sycl"
+      //ratx2_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_c, gpu_rf,
+  gpu_rb); q.submit([&] (sycl::handler &cgh) { cgh.parallel_for<class
+  ratx2<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
+  #include "ratx2.sycl"
+        });
       });
-    });
-    //ratx4_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_c, gpu_rf, gpu_rb);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class ratx4<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "ratx4.sycl"
+      //ratx4_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_c, gpu_rf,
+  gpu_rb); q.submit([&] (sycl::handler &cgh) { cgh.parallel_for<class
+  ratx4<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
+  #include "ratx4.sycl"
+        });
       });
-    });
 
-    //qssa_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf, gpu_rb, gpu_a);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class qssa<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "qssa.sycl"
+      //qssa_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf, gpu_rb,
+  gpu_a); q.submit([&] (sycl::handler &cgh) { cgh.parallel_for<class
+  qssa<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
+  #include "qssa.sycl"
+        });
       });
-    });
 
-    //qssab_kernel <<< dim3(blks), dim3(thrds), 0, s1 >>> ( gpu_rf, gpu_rb, gpu_a);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class qssab<real>>(sycl::nd_range<1>(gws, lws), [=] (sycl::nd_item<1> item) {
-#include "qssab.sycl"
+      //qssab_kernel <<< dim3(blks), dim3(thrds), 0, s1 >>> ( gpu_rf, gpu_rb,
+  gpu_a); q.submit([&] (sycl::handler &cgh) { cgh.parallel_for<class
+  qssab<real>>(sycl::nd_range<1>(gws, lws), [=] (sycl::nd_item<1> item) { #include
+  "qssab.sycl"
+        });
       });
-    });
-    //qssa2_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf, gpu_rb, gpu_a);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class qssa2<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "qssa2.sycl"
+      //qssa2_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf, gpu_rb,
+  gpu_a); q.submit([&] (sycl::handler &cgh) { cgh.parallel_for<class
+  qssa2<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
+  #include "qssa2.sycl"
+        });
       });
-    });
 
-    //  rdwdot_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf, gpu_rb, gpu_wdot, rateconv, gpu_molwt);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class rdwdot<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "rdwdot.sycl"
+      //  rdwdot_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf,
+  gpu_rb, gpu_wdot, rateconv, gpu_molwt); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class rdwdot<real>>(sycl::nd_range<1>(gws2, lws2), [=]
+  (sycl::nd_item<1> item) { #include "rdwdot.sycl"
+        });
       });
-    });
 
-    //  rdwdot2_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf, gpu_rb, gpu_wdot, rateconv, gpu_molwt);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class rdwdot2<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "rdwdot2.sycl"
+      //  rdwdot2_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf,
+  gpu_rb, gpu_wdot, rateconv, gpu_molwt); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class rdwdot2<real>>(sycl::nd_range<1>(gws2, lws2),
+  [=] (sycl::nd_item<1> item) { #include "rdwdot2.sycl"
+        });
       });
-    });
-    //rdwdot3_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf, gpu_rb, gpu_wdot, rateconv, gpu_molwt);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class rdwdot3<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "rdwdot3.sycl"
+      //rdwdot3_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf,
+  gpu_rb, gpu_wdot, rateconv, gpu_molwt); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class rdwdot3<real>>(sycl::nd_range<1>(gws2, lws2),
+  [=] (sycl::nd_item<1> item) { #include "rdwdot3.sycl"
+        });
       });
-    });
 
-    //rdwdot6_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf, gpu_rb, gpu_wdot, rateconv, gpu_molwt);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class rdwdot6<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "rdwdot6.sycl"
+      //rdwdot6_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf,
+  gpu_rb, gpu_wdot, rateconv, gpu_molwt); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class rdwdot6<real>>(sycl::nd_range<1>(gws2, lws2),
+  [=] (sycl::nd_item<1> item) { #include "rdwdot6.sycl"
+        });
       });
-    });
-    //  rdwdot7_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf, gpu_rb, gpu_wdot, rateconv, gpu_molwt);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class rdwdot7<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "rdwdot7.sycl"
+      //  rdwdot7_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf,
+  gpu_rb, gpu_wdot, rateconv, gpu_molwt); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class rdwdot7<real>>(sycl::nd_range<1>(gws2, lws2),
+  [=] (sycl::nd_item<1> item) { #include "rdwdot7.sycl"
+        });
       });
-    });
-    //rdwdot8_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf, gpu_rb, gpu_wdot, rateconv, gpu_molwt);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class rdwdot8<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "rdwdot8.sycl"
+      //rdwdot8_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf,
+  gpu_rb, gpu_wdot, rateconv, gpu_molwt); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class rdwdot8<real>>(sycl::nd_range<1>(gws2, lws2),
+  [=] (sycl::nd_item<1> item) { #include "rdwdot8.sycl"
+        });
       });
-    });
-    //  rdwdot9_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf, gpu_rb, gpu_wdot, rateconv, gpu_molwt);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class rdwdot9<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "rdwdot9.sycl"
+      //  rdwdot9_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf,
+  gpu_rb, gpu_wdot, rateconv, gpu_molwt); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class rdwdot9<real>>(sycl::nd_range<1>(gws2, lws2),
+  [=] (sycl::nd_item<1> item) { #include "rdwdot9.sycl"
+        });
       });
-    });
-    // rdwdot10_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf, gpu_rb, gpu_wdot, rateconv, gpu_molwt);
-    q.submit([&] (sycl::handler &cgh) {
-      cgh.parallel_for<class rdwdot10<real>>(sycl::nd_range<1>(gws2, lws2), [=] (sycl::nd_item<1> item) {
-#include "rdwdot10.sycl"
+      // rdwdot10_kernel <<< dim3(blks2), dim3(thrds2), 0, s1 >>> ( gpu_rf,
+  gpu_rb, gpu_wdot, rateconv, gpu_molwt); q.submit([&] (sycl::handler &cgh) {
+        cgh.parallel_for<class rdwdot10<real>>(sycl::nd_range<1>(gws2, lws2),
+  [=] (sycl::nd_item<1> item) { #include "rdwdot10.sycl"
+        });
       });
-    });
-    */
-    // Approximately 10k flops per grid point (estimated by Ramanan)
-  }
+      */
+      // Approximately 10k flops per grid point (estimated by Ramanan)
+    }
 
   q.wait();
-  auto end  = std::chrono::high_resolution_clock::now();
-  auto time = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
-  printf("\nAverage time of executing s3d kernels: %lf (us)\n", (time * 1e-3) / passes);
+  auto end = std::chrono::high_resolution_clock::now();
+  auto time
+    = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+  printf("\nAverage time of executing s3d kernels: %lf (us)\n",
+         (time * 1e-3) / passes);
 
   q.memcpy(host_wdot, d_wdot, WDOT_SIZE * n * sizeof(real)).wait();
 
@@ -416,11 +431,12 @@ void RunTest(string testName, sycl::queue &q, OptionParser &op)
   */
 
   // Print out answers for verification
-  for (int i=0; i<WDOT_SIZE; i++) {
-      printf("% 23.16E ", host_wdot[i*n]);
-      if (i % 3 == 2)
-          printf("\n");
-  }
+  for(int i = 0; i < WDOT_SIZE; i++)
+    {
+      printf("% 23.16E ", host_wdot[i * n]);
+      if(i % 3 == 2)
+        printf("\n");
+    }
   printf("\n");
 
   /*
