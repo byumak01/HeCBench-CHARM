@@ -84,12 +84,12 @@ int main(int argc, char *argv[])
       reference[i] += i * treeSize + j;
 
   sycl::queue q;
-
+  
   sycl::range<1> gws(treeNumber);
   sycl::range<1> lws(GROUP_SIZE);
 
-  sycl::nd_range<3> ndr(sycl::range<3>(1, 1, treeNumber), // Global range
-                        sycl::range<3>(1, 1, GROUP_SIZE)  // Local range
+  sycl::nd_range<1> ndr(sycl::range<1>(treeNumber), // Global range
+                        sycl::range<1>(GROUP_SIZE)  // Local range
   );
 
   sycl::buffer<int, 1> inputBuffer(data, elements);
@@ -110,9 +110,9 @@ int main(int argc, char *argv[])
         sycl::accessor<int, 1, sycl::access_mode::write> Result(outputBuffer,
                                                                 cgh);
 
-        cgh.parallel_for(ndr, [=](sycl::nd_item<3> const &item) {
-          int gid = item.get_global_linear_id(); // Use the Z-dimension
-                                                 // as the 1D index
+        cgh.parallel_for(ndr, [=](sycl::nd_item<1> const &item) {
+          int gid = item.get_global_id();
+                                                 
           int res = 0;
           for(int j = 0; j < treeSize; j++)
             {
@@ -161,8 +161,8 @@ int main(int argc, char *argv[])
                                                                   cgh);
         sycl::accessor<int, 1, sycl::access_mode::write> Result(outputBuffer,
                                                                 cgh);
-        cgh.parallel_for(ndr, [=](sycl::nd_item<3> const &item) {
-          uint gid = item.get_global_linear_id();
+        cgh.parallel_for(ndr, [=](sycl::nd_item<1> const &item) {
+          uint gid = item.get_global_id();
           uint res = 0;
           for(int j = 0; j < treeSize; j++)
             {
@@ -179,9 +179,6 @@ int main(int argc, char *argv[])
     = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
   std::cout << "Average kernel execution time (SoA): "
             << (time * 1e-3f) / iterations << " (us)\n";
-
-  //sycl::host_accessor<int, 1, sycl::access_mode::read> hostResult(
-  //  outputBuffer);
 
   for(int i = 0; i < treeNumber; i++)
     {
