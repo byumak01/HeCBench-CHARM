@@ -157,9 +157,9 @@
                                                                    cgh);
          sycl::accessor<int, 1, sycl::access_mode::write> Result(outputBuffer,
                                                                  cgh);
-         cgh.parallel_for(ndr, [=](sycl::id<1> const& id) {
-           uint gid = id[0];
-           uint res = 0;
+         cgh.parallel_for(gws, [=](sycl::id<1> const& id) {
+           int gid = id[0];
+           int res = 0;
            for(int j = 0; j < treeSize; j++)
              {
                res += AppleTree[j * gid + treeSize];
