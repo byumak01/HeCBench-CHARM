@@ -12,7 +12,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
 {
   // Initialize host data, with the first half the same as the second
   T *hostMem = (T*) malloc (sizeof(T) * numFloats);
-  T *_deviceMem (T*) malloc (sizeof(T) * numFloats)
+  T *_deviceMem (T*) malloc (sizeof(T) * numFloats);
 
   srand48(123);
   for (int j = 0; j < numFloats/2 ; ++j)
