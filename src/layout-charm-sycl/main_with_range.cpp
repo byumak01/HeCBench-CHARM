@@ -106,7 +106,7 @@
          sycl::accessor<int, 1, sycl::access_mode::write> Result(outputBuffer,
                                                                  cgh);
  
-         cgh.parallel_for(gws, [=](sycl::nd_item<3> const& id) {
+         cgh.parallel_for(gws, [=](sycl::nd_item<1> const& id) {
            int gid = id[0];
                                                 
            int res = 0;
