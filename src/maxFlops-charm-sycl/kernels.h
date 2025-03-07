@@ -120,9 +120,9 @@ template <class T>
 class mmadd8;
 
 template <class T>
-void Add1(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> *data /*T *data*/, int nIters, T v) {
+void Add1(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> &data /*T *data*/, int nIters, T v) {
   int gid = item.get_global_id(0);
-  T s = *data[gid];
+  T s = data[gid];
   for (int j=0 ; j<nIters ; ++j) {
      /* Each macro op has 20 operations.
         Unroll 12 more times for 240 operations total.
@@ -130,13 +130,13 @@ void Add1(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::
      ADD1_MOP20 ADD1_MOP20 ADD1_MOP20 ADD1_MOP20 ADD1_MOP20 ADD1_MOP20
      ADD1_MOP20 ADD1_MOP20 ADD1_MOP20 ADD1_MOP20 ADD1_MOP20 ADD1_MOP20
   }
-  *data[gid] = s;
+  data[gid] = s;
 }
 
 template <class T>
-void Add2(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> *data /*T *data*/, int nIters, T v) {
+void Add2(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> &data /*T *data*/, int nIters, T v) {
   int gid = item.get_global_id(0);
-  T s = *data[gid], s2=10.0f-s;
+  T s = data[gid], s2=10.0f-s;
   for (int j=0 ; j<nIters ; ++j) {
      /* Each macro op has 20 operations.
         Unroll 6 more times for 120 operations total.
@@ -144,13 +144,13 @@ void Add2(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::
      ADD2_MOP20 ADD2_MOP20 ADD2_MOP20
      ADD2_MOP20 ADD2_MOP20 ADD2_MOP20
   }
-  *data[gid] = s+s2;
+  data[gid] = s+s2;
 }
 
 template <class T>
-void Add4(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> *data /*T *data*/, int nIters, T v) {
+void Add4(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> &data /*T *data*/, int nIters, T v) {
   int gid = item.get_global_id(0);
-  T s = *data[gid], s2=10.0f-s, s3=9.0f-s, s4=9.0f-s2;
+  T s = data[gid], s2=10.0f-s, s3=9.0f-s, s4=9.0f-s2;
   for (int j=0 ; j<nIters ; ++j) {
      /* Each macro op has 10 operations.
         Unroll 6 more times for 60 operations total.
@@ -158,13 +158,13 @@ void Add4(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::
      ADD4_MOP10 ADD4_MOP10 ADD4_MOP10
      ADD4_MOP10 ADD4_MOP10 ADD4_MOP10
   }
-  *data[gid] = (s+s2)+(s3+s4);
+  data[gid] = (s+s2)+(s3+s4);
 }
 
 template <class T>
-void Add8(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> *data /*T *data*/, int nIters, T v) {
+void Add8(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> &data /*T *data*/, int nIters, T v) {
   int gid = item.get_global_id(0);
-  T s = *data[gid], s2=10.0f-s, s3=9.0f-s, s4=9.0f-s2, s5=8.0f-s, s6=8.0f-s2, s7=7.0f-s, s8=7.0f-s2;
+  T s = data[gid], s2=10.0f-s, s3=9.0f-s, s4=9.0f-s2, s5=8.0f-s, s6=8.0f-s2, s7=7.0f-s, s8=7.0f-s2;
   for (int j=0 ; j<nIters ; ++j) {
      /* Each macro op has 5 operations.
         Unroll 6 more times for 30 operations total.
@@ -172,13 +172,13 @@ void Add8(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::
      ADD8_MOP5 ADD8_MOP5 ADD8_MOP5
      ADD8_MOP5 ADD8_MOP5 ADD8_MOP5
   }
-  *data[gid] = ((s+s2)+(s3+s4))+((s5+s6)+(s7+s8));
+  data[gid] = ((s+s2)+(s3+s4))+((s5+s6)+(s7+s8));
 }
 
 template <class T>
-void Mul1(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> *data /*T *data*/, int nIters, T v) {
+void Mul1(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> &data /*T *data*/, int nIters, T v) {
   int gid = item.get_global_id(0);
-  T s = *data[gid]-data[gid]+0.999f;
+  T s = data[gid]-data[gid]+0.999f;
   for (int j=0 ; j<nIters ; ++j) {
      /* Each macro op has 20 operations.
         Unroll 10 more times for 200 operations total.
@@ -186,13 +186,13 @@ void Mul1(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::
      MUL1_MOP20 MUL1_MOP20 MUL1_MOP20 MUL1_MOP20 MUL1_MOP20
      MUL1_MOP20 MUL1_MOP20 MUL1_MOP20 MUL1_MOP20 MUL1_MOP20
   }
-  *data[gid] = s;
+  data[gid] = s;
 }
 
 template <class T>
-void Mul2(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> *data /*T *data*/, int nIters, T v) {
+void Mul2(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> &data /*T *data*/, int nIters, T v) {
   int gid = item.get_global_id(0);
-  T s = *data[gid]-data[gid]+0.999f, s2=s-0.0001f;
+  T s = data[gid]-data[gid]+0.999f, s2=s-0.0001f;
   for (int j=0 ; j<nIters ; ++j) {
      /* Each macro op has 20 operations.
         Unroll 5 more times for 100 operations total.
@@ -200,13 +200,13 @@ void Mul2(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::
      MUL2_MOP20 MUL2_MOP20 MUL2_MOP20
      MUL2_MOP20 MUL2_MOP20
   }
-  *data[gid] = s+s2;
+  data[gid] = s+s2;
 }
 
 template <class T>
-void Mul4(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> *data /*T *data*/, int nIters, T v) {
+void Mul4(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> &data /*T *data*/, int nIters, T v) {
   int gid = item.get_global_id(0);
-  T s = *data[gid]-data[gid]+0.999f, s2=s-0.0001f, s3=s-0.0002f, s4=s-0.0003f;
+  T s = data[gid]-data[gid]+0.999f, s2=s-0.0001f, s3=s-0.0002f, s4=s-0.0003f;
   for (int j=0 ; j<nIters ; ++j) {
      /* Each macro op has 10 operations.
         Unroll 5 more times for 50 operations total.
@@ -214,13 +214,13 @@ void Mul4(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::
      MUL4_MOP10 MUL4_MOP10 MUL4_MOP10
      MUL4_MOP10 MUL4_MOP10
   }
-  *data[gid] = (s+s2)+(s3+s4);
+  data[gid] = (s+s2)+(s3+s4);
 }
 
 template <class T>
-void Mul8(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> *data /*T *data*/, int nIters, T v) {
+void Mul8(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> &data /*T *data*/, int nIters, T v) {
   int gid = item.get_global_id(0);
-  T s = *data[gid]-data[gid]+0.999f, s2=s-0.0001f, s3=s-0.0002f,
+  T s = data[gid]-data[gid]+0.999f, s2=s-0.0001f, s3=s-0.0002f,
     s4=s-0.0003f, s5=s-0.0004f, s6=s-0.0005f, s7=s-0.0006f, s8=s-0.0007f;
   for (int j=0 ; j<nIters ; ++j) {
      /* Each macro op has 5 operations.
@@ -229,13 +229,13 @@ void Mul8(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::
      MUL8_MOP5 MUL8_MOP5 MUL8_MOP5
      MUL8_MOP5 MUL8_MOP5
   }
-  *data[gid] = ((s+s2)+(s3+s4))+((s5+s6)+(s7+s8));
+  data[gid] = ((s+s2)+(s3+s4))+((s5+s6)+(s7+s8));
 }
 
 template <class T>
-void MAdd1(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> *data /*T *data*/, int nIters, T v1, T v2) {
+void MAdd1(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> &data /*T *data*/, int nIters, T v1, T v2) {
   int gid = item.get_global_id(0);
-  T s = *data[gid];
+  T s = data[gid];
   for (int j=0 ; j<nIters ; ++j) {
      /* Each macro op has 20 operations.
         Unroll 12 more times for 240 operations total.
@@ -243,13 +243,13 @@ void MAdd1(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode:
      MADD1_MOP20 MADD1_MOP20 MADD1_MOP20 MADD1_MOP20 MADD1_MOP20 MADD1_MOP20
      MADD1_MOP20 MADD1_MOP20 MADD1_MOP20 MADD1_MOP20 MADD1_MOP20 MADD1_MOP20
   }
-  *data[gid] = s;
+  data[gid] = s;
 }
 
 template <class T>
-void MAdd2(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> *data /*T *data*/, int nIters, T v1, T v2) {
+void MAdd2(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> &data /*T *data*/, int nIters, T v1, T v2) {
   int gid = item.get_global_id(0);
-  T s = *data[gid], s2=10.0f-s;
+  T s = data[gid], s2=10.0f-s;
   for (int j=0 ; j<nIters ; ++j) {
      /* Each macro op has 20 operations.
         Unroll 6 more times for 120 operations total.
@@ -257,13 +257,13 @@ void MAdd2(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode:
      MADD2_MOP20 MADD2_MOP20 MADD2_MOP20
      MADD2_MOP20 MADD2_MOP20 MADD2_MOP20
   }
-  *data[gid] = s+s2;
+  data[gid] = s+s2;
 }
 
 template <class T>
-void MAdd4(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> *data /*T *data*/, int nIters, T v1, T v2) {
+void MAdd4(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> &data /*T *data*/, int nIters, T v1, T v2) {
   int gid = item.get_global_id(0);
-  T s = *data[gid], s2=10.0f-s, s3=9.0f-s, s4=9.0f-s2;
+  T s = data[gid], s2=10.0f-s, s3=9.0f-s, s4=9.0f-s2;
   for (int j=0 ; j<nIters ; ++j) {
      /* Each macro op has 10 operations.
         Unroll 6 more times for 60 operations total.
@@ -271,13 +271,13 @@ void MAdd4(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode:
      MADD4_MOP10 MADD4_MOP10 MADD4_MOP10
      MADD4_MOP10 MADD4_MOP10 MADD4_MOP10
   }
-  *data[gid] = (s+s2)+(s3+s4);
+  data[gid] = (s+s2)+(s3+s4);
 }
 
 template <class T>
-void MAdd8(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> *data /*T *data*/, int nIters, T v1, T v2) {
+void MAdd8(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> &data /*T *data*/, int nIters, T v1, T v2) {
   int gid = item.get_global_id(0);
-  T s = *data[gid], s2=10.0f-s, s3=9.0f-s, s4=9.0f-s2,
+  T s = data[gid], s2=10.0f-s, s3=9.0f-s, s4=9.0f-s2,
     s5=8.0f-s, s6=8.0f-s2, s7=7.0f-s, s8=7.0f-s2;
   for (int j=0 ; j<nIters ; ++j) {
      /* Each macro op has 5 operations.
@@ -286,13 +286,13 @@ void MAdd8(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode:
      MADD8_MOP5 MADD8_MOP5 MADD8_MOP5
      MADD8_MOP5 MADD8_MOP5 MADD8_MOP5
   }
-  *data[gid] = ((s+s2)+(s3+s4))+((s5+s6)+(s7+s8));
+  data[gid] = ((s+s2)+(s3+s4))+((s5+s6)+(s7+s8));
 }
 
 template <class T>
-void MulMAdd1(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> *data /*T *data*/, int nIters, T v1, T v2) {
+void MulMAdd1(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> &data /*T *data*/, int nIters, T v1, T v2) {
   int gid = item.get_global_id(0);
-  T s = *data[gid];
+  T s = data[gid];
   for (int j=0 ; j<nIters ; ++j) {
      /* Each macro op has 20 operations.
         Unroll 8 more times for 160 operations total.
@@ -300,13 +300,13 @@ void MulMAdd1(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mo
      MULMADD1_MOP20 MULMADD1_MOP20 MULMADD1_MOP20 MULMADD1_MOP20
      MULMADD1_MOP20 MULMADD1_MOP20 MULMADD1_MOP20 MULMADD1_MOP20
   }
-  *data[gid] = s;
+  data[gid] = s;
 }
 
 template <class T>
-void MulMAdd2(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> *data /*T *data*/, int nIters, T v1, T v2) {
+void MulMAdd2(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> &data /*T *data*/, int nIters, T v1, T v2) {
   int gid = item.get_global_id(0);
-  T s = *data[gid], s2=10.0f-s;
+  T s = data[gid], s2=10.0f-s;
   for (int j=0 ; j<nIters ; ++j) {
      /* Each macro op has 20 operations.
         Unroll 4 more times for 80 operations total.
@@ -314,13 +314,13 @@ void MulMAdd2(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mo
      MULMADD2_MOP20 MULMADD2_MOP20
      MULMADD2_MOP20 MULMADD2_MOP20
   }
-  *data[gid] = s+s2;
+  data[gid] = s+s2;
 }
 
 template <class T>
-void MulMAdd4(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> *data /*T *data*/, int nIters, T v1, T v2) {
+void MulMAdd4(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> &data /*T *data*/, int nIters, T v1, T v2) {
   int gid = item.get_global_id(0);
-  T s = *data[gid], s2=10.0f-s, s3=9.0f-s, s4=9.0f-s2;
+  T s = data[gid], s2=10.0f-s, s3=9.0f-s, s4=9.0f-s2;
   for (int j=0 ; j<nIters ; ++j) {
      /* Each macro op has 10 operations.
         Unroll 4 more times for 40 operations total.
@@ -328,13 +328,13 @@ void MulMAdd4(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mo
      MULMADD4_MOP10 MULMADD4_MOP10
      MULMADD4_MOP10 MULMADD4_MOP10
   }
-  *data[gid] = (s+s2)+(s3+s4);
+  data[gid] = (s+s2)+(s3+s4);
 }
 
 template <class T>
-void MulMAdd8(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> *data /*T *data*/, int nIters, T v1, T v2) {
+void MulMAdd8(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mode::read_write> &data /*T *data*/, int nIters, T v1, T v2) {
   int gid = item.get_global_id(0);
-  T s = *data[gid], s2=10.0f-s, s3=9.0f-s, s4=9.0f-s2,
+  T s = data[gid], s2=10.0f-s, s3=9.0f-s, s4=9.0f-s2,
     s5=8.0f-s, s6=8.0f-s2, s7=7.0f-s, s8=7.0f-s2;
   for (int j=0 ; j<nIters ; ++j) {
      /* Each macro op has 5 operations.
@@ -343,5 +343,5 @@ void MulMAdd8(sycl::nd_item<1> &item, const sycl::accessor<T, 1, sycl::access_mo
      MULMADD8_MOP5 MULMADD8_MOP5
      MULMADD8_MOP5 MULMADD8_MOP5
   }
-  *data[gid] = ((s+s2)+(s3+s4))+((s5+s6)+(s7+s8));
+  data[gid] = ((s+s2)+(s3+s4))+((s5+s6)+(s7+s8));
 }
