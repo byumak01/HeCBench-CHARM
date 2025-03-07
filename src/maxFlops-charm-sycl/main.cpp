@@ -11,13 +11,13 @@ template <class T>
 void test (sycl::queue &q, const int repeat, const int numFloats)
 {
   // Initialize host data, with the first half the same as the second
-  T *hostMem = (T*) malloc (sizeof(T) * numFloats);
-  T *_deviceMem (T*) malloc (sizeof(T) * numFloats);
-
+  T* hostMem = (T*) malloc (sizeof(T) * numFloats);
+  T* _deviceMem = (T*) malloc (sizeof(T) * numFloats);
+  /*
   srand48(123);
   for (int j = 0; j < numFloats/2 ; ++j)
     hostMem[j] = hostMem[numFloats-j-1] = (T)(drand48()*10.0);
-
+  */
   sycl::buffer<T, 1> hostMem_buffer(hostMem, numFloats);
   sycl::buffer<T, 1> deviceMem_buffer(_deviceMem, numFloats);
 
@@ -62,6 +62,7 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
 
   auto k_start = std::chrono::high_resolution_clock::now();
   q.submit([&](sycl::handler &cgh) {
+    sycl::accessor<T, 1, sycl::access_mode::read> deviceMem(deviceMem_buffer, cgh);
     cgh.parallel_for<class add1<T>>(sycl::nd_range<1>(gws, lws), [=](sycl::nd_item<1> item) {
       Add1<T>(item, deviceMem, repeat, 10.0);
     });
