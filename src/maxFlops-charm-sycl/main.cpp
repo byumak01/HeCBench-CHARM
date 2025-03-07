@@ -23,8 +23,8 @@ void test (sycl::queue &q, const int repeat, const int numFloats)
   //sycl::buffer<T, 1> hostMem_buffer(hostMem, numFloats);
   //sycl::buffer<T, 1> deviceMem_buffer(_deviceMem, numFloats);
 
-  sycl::buffer hostMem_buffer{hostMem};
-  sycl::buffer deviceMem_buffer{_deviceMem};
+  sycl::buffer hostMem_buffer(hostMem);
+  sycl::buffer deviceMem_buffer(_deviceMem);
 
   sycl::range<1> gws (numFloats);
   sycl::range<1> lws (BLOCK_SIZE);
